@@ -494,6 +494,69 @@ api.post('/api/generate/v2', async (request) => {
 	return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 });
 
+// POST /api/generate/concat/v2/
+api.post('/api/generate/concat/v2/', async (request) => {
+	/*
+		#swagger.parameters['body'] = {
+				in: 'body',
+				description: 'Auth Data.',
+				required: true,
+				schema: {
+						session_id: "",
+						access_token: "",
+						clip_id: "",
+				}
+		}
+	*/
+
+	const params = await request.json();
+	const clip_id = typeof params?.clip_id === 'string' ? params.clip_id : '';
+	if (clip_id === '') {
+		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
+			status: 400,
+			headers: { ...corsHeaders }
+		});
+	}
+
+	const session_id = typeof params?.session_id === 'string' ? params.session_id : '';
+	const access_token = typeof params?.access_token === 'string' ? params.access_token : '';
+
+	let token = {
+		jwt: ''
+	};
+	if (session_id !== '') {
+		let res = await AuthService.refreshToken(session_id, access_token);
+		token = await res.json();
+		if ('errors' in token || !('jwt' in token)) {
+			return new Response(JSON.stringify(token), { status: res.status, headers: { ...corsHeaders } });
+		}
+	}
+
+	const body = {
+		clip_id: clip_id
+	};
+
+	let res = await fetch('https://studio-api.suno.ai/api/generate/concat/v2/', {
+		'headers': {
+			'accept': '*/*',
+			'accept-language': 'zh-CN,zh;q=0.9',
+			'authorization': `Bearer ${token?.jwt ?? ''}`,
+			'content-type': 'text/plain;charset=UTF-8',
+			'sec-ch-ua': '"Chromium";v="123", "Not:A-Brand";v="8"',
+			'sec-ch-ua-mobile': '?0',
+			'sec-ch-ua-platform': '"macOS"',
+			'sec-fetch-dest': 'empty',
+			'sec-fetch-mode': 'cors',
+			'sec-fetch-site': 'same-site',
+			'Referer': 'https://app.suno.ai/',
+			'Referrer-Policy': 'strict-origin-when-cross-origin'
+		},
+		'body': JSON.stringify(body),
+		'method': 'POST'
+	});
+	return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+});
+
 // POST /api/gen/:id/set_title
 api.post('/api/gen/:id/set_title', async (request) => {
 	/*

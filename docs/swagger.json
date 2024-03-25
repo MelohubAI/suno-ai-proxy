@@ -303,6 +303,41 @@
         }
       }
     },
+    "/api/generate/concat/v2/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                },
+                "clip_id": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/gen/{id}/set_title": {
       "post": {
         "description": "",
