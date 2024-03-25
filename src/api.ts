@@ -1,12 +1,12 @@
 import { IRequest, Router } from 'itty-router';
 
-const api = Router();
+export const api = Router();
 
-const corsHeaders = {
+export const corsHeaders = {
 	'Access-Control-Allow-Origin': '*',
 	'Access-Control-Allow-Methods': '*',
 	'Access-Control-Allow-Headers': '*',
-	'Access-Control-Max-Age': '86400'
+	'Access-Control-Max-Age': '86400',
 };
 
 class AuthService {
@@ -25,16 +25,15 @@ class AuthService {
 				'sec-fetch-site': 'same-site',
 				cookie: `__client=${access_token};`,
 				Referer: 'https://app.suno.ai/',
-				'Referrer-Policy': 'strict-origin-when-cross-origin'
+				'Referrer-Policy': 'strict-origin-when-cross-origin',
 			},
 			body: '',
-			method: 'POST'
+			method: 'POST',
 		});
 	}
 }
 
-async function handleRequest(request: IRequest, env: Env, callback: Function) {
-
+export async function handleRequest(request: IRequest, env: Env, callback: Function) {
 	// @ts-ignore
 	const { SESSION_ID, ACCESS_TOKEN } = env;
 	const { headers } = request;
@@ -43,7 +42,7 @@ async function handleRequest(request: IRequest, env: Env, callback: Function) {
 	if (session_id === '' || access_token === '') {
 		return new Response(JSON.stringify({ errors: 'session_id and access_token are required' }), {
 			status: 400,
-			headers: { ...corsHeaders }
+			headers: { ...corsHeaders },
 		});
 	}
 
@@ -57,8 +56,7 @@ async function handleRequest(request: IRequest, env: Env, callback: Function) {
 	return callback(token);
 }
 
-
-function fetchSuno(url: string, token: string, body: any = null, method: string = 'POST') {
+export function fetchSuno(url: string, token: string, body: any = null, method: string = 'POST') {
 	console.debug('fetchSuno:', url, token, body, method);
 	return fetch(url, {
 		headers: {
@@ -72,10 +70,10 @@ function fetchSuno(url: string, token: string, body: any = null, method: string 
 			'sec-fetch-mode': 'cors',
 			'sec-fetch-site': 'same-site',
 			Referer: 'https://app.suno.ai/',
-			'Referrer-Policy': 'strict-origin-when-cross-origin'
+			'Referrer-Policy': 'strict-origin-when-cross-origin',
 		},
 		body: body ? JSON.stringify(body) : null,
-		method: method.toUpperCase()
+		method: method.toUpperCase(),
 	});
 }
 
@@ -99,8 +97,8 @@ api.get('/api/new', async (request) => {
 	return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 });
 
-// POST /api/playlist/:clip_id
-api.post('/api/playlist/:clip_id', async (request, env) => {
+// GET /api/feed
+api.get('/api/feed', async (request, env) => {
 	/*
 		#swagger.parameters['x-session-id'] = {
 				in: 'header',
@@ -113,39 +111,6 @@ api.post('/api/playlist/:clip_id', async (request, env) => {
 				required: false,
 		}
 	*/
-
-	const { query, params } = request;
-	const page = typeof query?.page === 'string' ? query.page : '1';
-	const clip_id = typeof params?.clip_id === 'string' ? params.clip_id : '';
-	if (!clip_id) {
-		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
-			status: 400,
-			headers: { ...corsHeaders }
-		});
-	}
-
-	return handleRequest(request, env, async (token: any) => {
-		const url = `https://studio-api.suno.ai/api/playlist/${clip_id}/?page=${page}`;
-		const res = await fetchSuno(url, token?.jwt, null, 'GET');
-		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
-	});
-});
-
-// POST /api/feed
-api.post('/api/feed', async (request, env) => {
-	/*
-		#swagger.parameters['x-session-id'] = {
-				in: 'header',
-				description: 'x-session-id',
-				required: false,
-		}
-		#swagger.parameters['x-access-token'] = {
-				in: 'header',
-				description: 'x-access-token',
-				required: false,
-		}
-	*/
-
 
 	const { query } = request;
 
@@ -172,8 +137,8 @@ api.post('/api/feed', async (request, env) => {
 	});
 });
 
-// POST /api/playlist/me
-api.post('/api/playlist/me', async (request, env) => {
+// GET /api/playlist/me
+api.get('/api/playlist/me', async (request, env) => {
 	/*
 		#swagger.parameters['x-session-id'] = {
 				in: 'header',
@@ -194,7 +159,6 @@ api.post('/api/playlist/me', async (request, env) => {
 	// @ts-ignore
 	data.append('show_trashed', query?.show_trashed ?? false);
 
-
 	return handleRequest(request, env, async (token: any) => {
 		const url = `https://studio-api.suno.ai/api/playlist/me?${data.toString()}`;
 		const res = await fetchSuno(url, token['jwt'], null, 'GET');
@@ -202,8 +166,41 @@ api.post('/api/playlist/me', async (request, env) => {
 	});
 });
 
-// POST /api/clips/trashed
-api.post('/api/clips/trashed', async (request, env) => {
+// GET /api/playlist/:clip_id
+api.get('/api/playlist/:clip_id', async (request, env) => {
+	/*
+		#swagger.parameters['x-session-id'] = {
+				in: 'header',
+				description: 'x-session-id',
+				required: false,
+		}
+		#swagger.parameters['x-access-token'] = {
+				in: 'header',
+				description: 'x-access-token',
+				required: false,
+		}
+	*/
+
+	const { query, params } = request;
+	console.debug(query, params);
+	const page = typeof query?.page === 'string' ? query.page : '1';
+	const clip_id = typeof params?.clip_id === 'string' ? params.clip_id : '';
+	if (!clip_id) {
+		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
+			status: 400,
+			headers: { ...corsHeaders },
+		});
+	}
+
+	return handleRequest(request, env, async (token: any) => {
+		const url = `https://studio-api.suno.ai/api/playlist/${clip_id}/?page=${page}`;
+		const res = await fetchSuno(url, token?.jwt, null, 'GET');
+		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+	});
+});
+
+// GET /api/clips/trashed
+api.get('/api/clips/trashed', async (request, env) => {
 	/*
 		#swagger.parameters['x-session-id'] = {
 				in: 'header',
@@ -221,7 +218,6 @@ api.post('/api/clips/trashed', async (request, env) => {
 	let data = new URLSearchParams();
 	// @ts-ignore
 	data.append('page', Math.max(query?.page ?? '0' - 1, 0));
-
 
 	return handleRequest(request, env, async (token: any) => {
 		const url = `https://studio-api.suno.ai/api/clips/trashed?${data.toString()}`;
@@ -258,17 +254,16 @@ api.post('/api/generate/lyrics', async (request, env) => {
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-				prompt: prompt
-			}
-		;
+			prompt: prompt,
+		};
 		const url = `https://studio-api.suno.ai/api/generate/lyrics/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
 		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 	});
 });
 
-// POST /api/generate/lyrics/:clip_id
-api.post('/api/generate/lyrics/:clip_id', async (request, env) => {
+// GET /api/generate/lyrics/:clip_id
+api.get('/api/generate/lyrics/:clip_id', async (request, env) => {
 	/*
 		#swagger.parameters['x-session-id'] = {
 				in: 'header',
@@ -287,66 +282,13 @@ api.post('/api/generate/lyrics/:clip_id', async (request, env) => {
 	if (!clip_id) {
 		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
 			status: 400,
-			headers: { ...corsHeaders }
+			headers: { ...corsHeaders },
 		});
 	}
 
 	return handleRequest(request, env, async (token: any) => {
 		const url = `https://studio-api.suno.ai/api/generate/lyrics/${clip_id}`;
 		const res = await fetchSuno(url, token['jwt'], null, 'GET');
-		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
-	});
-});
-
-
-// POST /api/generate/v2
-api.post('/api/generate/v2', async (request, env) => {
-	/*
-		#swagger.parameters['header'] = {
-					in: 'header',
-					description: 'Auth Data.',
-					required: true,
-					schema: {
-							x_session_id: "",
-							x_access_token: ""
-					}
-			}
-			#swagger.parameters['body'] = {
-					in: 'body',
-					description: 'Data.',
-					required: true,
-					schema: {
-							title: "相拥",
-							tags: "古风 女声",
-							prompt: "【主歌】\n烟雨朦胧锁江楼，孤灯不明思故人。\n千里共婵娟，何时能共枕眠？\n红尘多难，情深缘浅，相思成疾。\n梦回吹角连营，却见你，马踏飞燕。\n【副歌】\n你在桥头等归人，我在彼岸望故园。\n两情若是久长时，又岂在朝朝暮暮。\n终于一日，山河迢递，你我相见。\n此情可待成追忆，只是当时已惘然。\n【主歌】\n月上柳梢头，人约黄昏后。\n相思无尽处，漫卷诗书愁。\n风吹散细雨，翠竹暗香浮。\n何日平胡虏，良人兮归否？\n【副歌】\n你在灯火阑珊处，我在雾海孤舟。\n两意若是长久时，又岂在晨昏定省。\n终于一日，云开雾散，你我重逢。\n此情可待成追忆，只是当时已惘然。\n【尾声】\n红线牵，凤凰台上，誓言轻许。\n山无陵，天地合，乃敢与君绝。",
-							mv: "chirp-v3-0",
-							continue_clip_id: "",
-							continue_at: ""
-					}
-			}
-	*/
-
-	const params = await request.json();
-	const title = typeof params?.title === 'string' ? params.title : '';
-	const tags = typeof params?.tags === 'string' ? params.tags : '';
-	const prompt = typeof params?.prompt === 'string' ? params.prompt : '';
-	const mv = typeof params?.mv === 'string' ? params.mv : '';
-	const continue_clip_id = typeof params?.continue_clip_id === 'string' ? params.continue_clip_id : '';
-	const continue_at = typeof params?.continue_at === 'string' ? params.continue_at : '';
-
-
-	return handleRequest(request, env, async (token: any) => {
-		const body = {
-				prompt: prompt,
-				title: title,
-				tags: tags,
-				mv: mv,
-				continue_clip_id: continue_clip_id != '' ? continue_clip_id : null,
-				continue_at: continue_at != '' ? continue_at : null
-			}
-		;
-		const url = `https://studio-api.suno.ai/api/generate/v2/`;
-		const res = await fetchSuno(url, token['jwt'], body, 'POST');
 		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 	});
 });
@@ -378,13 +320,13 @@ api.post('/api/generate/concat/v2/', async (request, env) => {
 	if (!clip_id) {
 		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
 			status: 400,
-			headers: { ...corsHeaders }
+			headers: { ...corsHeaders },
 		});
 	}
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-			clip_id: clip_id
+			clip_id: clip_id,
 		};
 		const url = `https://studio-api.suno.ai/api/generate/concat/v2/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
@@ -419,24 +361,21 @@ api.post('/api/gen/:clip_id/set_title', async (request, env) => {
 	if (!clip_id) {
 		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
 			status: 400,
-			headers: { ...corsHeaders }
+			headers: { ...corsHeaders },
 		});
 	}
 	params = await request.json();
 	const title = typeof params?.title === 'string' ? params.title : '';
 
-
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-				title: title
-			}
-		;
+			title: title,
+		};
 		const url = `https://studio-api.suno.ai/api/gen/${clip_id}/set_title/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
 		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 	});
 });
-
 
 // POST /api/gen/trash
 api.post('/api/gen/trash', async (request, env) => {
@@ -468,21 +407,20 @@ api.post('/api/gen/trash', async (request, env) => {
 	if (clip_ids.length == 0) {
 		return new Response(JSON.stringify({ errors: 'clip_ids is required' }), {
 			status: 400,
-			headers: { ...corsHeaders }
+			headers: { ...corsHeaders },
 		});
 	}
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
 			clip_ids: clip_ids,
-			trash: trash
+			trash: trash,
 		};
 		const url = `https://studio-api.suno.ai/api/gen/trash/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
 		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 	});
 });
-
 
 // POST /api/clips/delete
 api.post('/api/clips/delete', async (request, env) => {
@@ -509,24 +447,22 @@ api.post('/api/clips/delete', async (request, env) => {
 	const params = await request.json();
 	const clip_ids = typeof params?.clip_ids === 'object' ? params.clip_ids : [];
 
-	if (clip_ids.length == 0) {
+	if (clip_ids.length <= 0) {
 		return new Response(JSON.stringify({ errors: 'clip_ids is required' }), {
 			status: 400,
-			headers: { ...corsHeaders }
+			headers: { ...corsHeaders },
 		});
 	}
 
-
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-			ids: clip_ids
+			ids: clip_ids,
 		};
 
 		const url = `https://studio-api.suno.ai/api/clips/delete/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
-		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+		return new Response(JSON.stringify({ detail: 'ok' }), { status: res.status, headers: { ...corsHeaders } });
 	});
 });
-
 
 export default api;
