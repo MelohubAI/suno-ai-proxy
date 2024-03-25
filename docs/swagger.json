@@ -61,11 +61,6 @@
             "type": "string"
           },
           {
-            "name": "id",
-            "in": "query",
-            "type": "string"
-          },
-          {
             "name": "body",
             "in": "body",
             "description": "Auth Data.",
@@ -123,6 +118,68 @@
         }
       }
     },
+    "/api/playlist/me": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/clips/trashed": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
     "/api/generate/lyrics": {
       "post": {
         "description": "",
@@ -142,6 +199,223 @@
                 "access_token": {
                   "type": "string",
                   "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/generate/lyrics/{id}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/generate/v2": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                },
+                "title": {
+                  "type": "string",
+                  "example": "相拥"
+                },
+                "tags": {
+                  "type": "string",
+                  "example": "古风 女声"
+                },
+                "prompt": {
+                  "type": "string",
+                  "example": "【主歌】\n烟雨朦胧锁江楼，孤灯不明思故人。\n千里共婵娟，何时能共枕眠？\n红尘多难，情深缘浅，相思成疾。\n梦回吹角连营，却见你，马踏飞燕。\n【副歌】\n你在桥头等归人，我在彼岸望故园。\n两情若是久长时，又岂在朝朝暮暮。\n终于一日，山河迢递，你我相见。\n此情可待成追忆，只是当时已惘然。\n【主歌】\n月上柳梢头，人约黄昏后。\n相思无尽处，漫卷诗书愁。\n风吹散细雨，翠竹暗香浮。\n何日平胡虏，良人兮归否？\n【副歌】\n你在灯火阑珊处，我在雾海孤舟。\n两意若是长久时，又岂在晨昏定省。\n终于一日，云开雾散，你我重逢。\n此情可待成追忆，只是当时已惘然。\n【尾声】\n红线牵，凤凰台上，誓言轻许。\n山无陵，天地合，乃敢与君绝。"
+                },
+                "mv": {
+                  "type": "string",
+                  "example": "chirp-v3-0"
+                },
+                "continue_clip_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "continue_at": {
+                  "type": "string",
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/gen/{id}/set_title": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                },
+                "title": {
+                  "type": "string",
+                  "example": "相拥"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/gen/trash": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                },
+                "trash": {
+                  "type": "boolean",
+                  "example": true
+                },
+                "clip_ids": {
+                  "type": "array",
+                  "example": [
+                    "95b4ecb3-9017-4c49-8a09-5bd313db9ea6"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": ""
+          }
+        }
+      }
+    },
+    "/api/clips/delete": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Auth Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "session_id": {
+                  "type": "string",
+                  "example": ""
+                },
+                "access_token": {
+                  "type": "string",
+                  "example": ""
+                },
+                "clip_ids": {
+                  "type": "array",
+                  "example": [
+                    "95b4ecb3-9017-4c49-8a09-5bd313db9ea6"
+                  ],
+                  "items": {
+                    "type": "string"
+                  }
                 }
               }
             }
