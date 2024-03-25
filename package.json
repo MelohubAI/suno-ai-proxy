@@ -1,0 +1,21 @@
+{
+	"name": "suno-ai-proxy",
+	"version": "0.0.0",
+	"private": true,
+	"scripts": {
+		"deploy": "npx wrangler deploy",
+		"dev": "npx wrangler dev",
+		"start": "npx wrangler dev",
+		"swagger-autogen": "node ./docs/swagger.js"
+	},
+	"devDependencies": {
+		"@cloudflare/workers-types": "^4.20240320.1",
+		"itty-router": "^3.0.12",
+		"swagger-autogen": "^2.23.7",
+		"typescript": "^5.0.4",
+		"wrangler": "^3.0.0"
+	},
+	"dependencies": {
+		"@fastify/cors": "^9.0.1"
+	}
+}
