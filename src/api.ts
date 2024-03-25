@@ -102,14 +102,15 @@ api.get('/api/new', async (request) => {
 // POST /api/playlist/:clip_id
 api.post('/api/playlist/:clip_id', async (request, env) => {
 	/*
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Auth Data.',
-				required: true,
-				schema: {
-						session_id: "",
-						access_token: ""
-				}
+		#swagger.parameters['x-session-id'] = {
+				in: 'header',
+				description: 'x-session-id',
+				required: false,
+		}
+		#swagger.parameters['x-access-token'] = {
+				in: 'header',
+				description: 'x-access-token',
+				required: false,
 		}
 	*/
 
@@ -133,14 +134,15 @@ api.post('/api/playlist/:clip_id', async (request, env) => {
 // POST /api/feed
 api.post('/api/feed', async (request, env) => {
 	/*
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Auth Data.',
-				required: true,
-				schema: {
-						session_id: "",
-						access_token: ""
-				}
+		#swagger.parameters['x-session-id'] = {
+				in: 'header',
+				description: 'x-session-id',
+				required: false,
+		}
+		#swagger.parameters['x-access-token'] = {
+				in: 'header',
+				description: 'x-access-token',
+				required: false,
 		}
 	*/
 
@@ -173,14 +175,15 @@ api.post('/api/feed', async (request, env) => {
 // POST /api/playlist/me
 api.post('/api/playlist/me', async (request, env) => {
 	/*
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Auth Data.',
-				required: true,
-				schema: {
-						session_id: "",
-						access_token: ""
-				}
+		#swagger.parameters['x-session-id'] = {
+				in: 'header',
+				description: 'x-session-id',
+				required: false,
+		}
+		#swagger.parameters['x-access-token'] = {
+				in: 'header',
+				description: 'x-access-token',
+				required: false,
 		}
 	*/
 
@@ -202,14 +205,15 @@ api.post('/api/playlist/me', async (request, env) => {
 // POST /api/clips/trashed
 api.post('/api/clips/trashed', async (request, env) => {
 	/*
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Auth Data.',
-				required: true,
-				schema: {
-						session_id: "",
-						access_token: ""
-				}
+		#swagger.parameters['x-session-id'] = {
+				in: 'header',
+				description: 'x-session-id',
+				required: false,
+		}
+		#swagger.parameters['x-access-token'] = {
+				in: 'header',
+				description: 'x-access-token',
+				required: false,
 		}
 	*/
 
@@ -229,13 +233,21 @@ api.post('/api/clips/trashed', async (request, env) => {
 // POST /api/generate/lyrics
 api.post('/api/generate/lyrics', async (request, env) => {
 	/*
+		#swagger.parameters['x-session-id'] = {
+				in: 'header',
+				description: 'x-session-id',
+				required: false,
+		}
+		#swagger.parameters['x-access-token'] = {
+				in: 'header',
+				description: 'x-access-token',
+				required: false,
+		}
 		#swagger.parameters['body'] = {
 				in: 'body',
-				description: 'Auth Data.',
+				description: 'Data.',
 				required: true,
 				schema: {
-						session_id: "",
-						access_token: "",
 						prompt: ""
 				}
 		}
@@ -258,14 +270,15 @@ api.post('/api/generate/lyrics', async (request, env) => {
 // POST /api/generate/lyrics/:clip_id
 api.post('/api/generate/lyrics/:clip_id', async (request, env) => {
 	/*
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Auth Data.',
-				required: true,
-				schema: {
-						session_id: "",
-						access_token: ""
-				}
+		#swagger.parameters['x-session-id'] = {
+				in: 'header',
+				description: 'x-session-id',
+				required: false,
+		}
+		#swagger.parameters['x-access-token'] = {
+				in: 'header',
+				description: 'x-access-token',
+				required: false,
 		}
 	*/
 
@@ -289,21 +302,28 @@ api.post('/api/generate/lyrics/:clip_id', async (request, env) => {
 // POST /api/generate/v2
 api.post('/api/generate/v2', async (request, env) => {
 	/*
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Auth Data.',
-				required: true,
-				schema: {
-						session_id: "",
-						access_token: "",
-						title: "相拥",
-						tags: "古风 女声",
-						prompt: "【主歌】\n烟雨朦胧锁江楼，孤灯不明思故人。\n千里共婵娟，何时能共枕眠？\n红尘多难，情深缘浅，相思成疾。\n梦回吹角连营，却见你，马踏飞燕。\n【副歌】\n你在桥头等归人，我在彼岸望故园。\n两情若是久长时，又岂在朝朝暮暮。\n终于一日，山河迢递，你我相见。\n此情可待成追忆，只是当时已惘然。\n【主歌】\n月上柳梢头，人约黄昏后。\n相思无尽处，漫卷诗书愁。\n风吹散细雨，翠竹暗香浮。\n何日平胡虏，良人兮归否？\n【副歌】\n你在灯火阑珊处，我在雾海孤舟。\n两意若是长久时，又岂在晨昏定省。\n终于一日，云开雾散，你我重逢。\n此情可待成追忆，只是当时已惘然。\n【尾声】\n红线牵，凤凰台上，誓言轻许。\n山无陵，天地合，乃敢与君绝。",
-						mv: "chirp-v3-0",
-						continue_clip_id: "",
-						continue_at: ""
-				}
-		}
+		#swagger.parameters['header'] = {
+					in: 'header',
+					description: 'Auth Data.',
+					required: true,
+					schema: {
+							x_session_id: "",
+							x_access_token: ""
+					}
+			}
+			#swagger.parameters['body'] = {
+					in: 'body',
+					description: 'Data.',
+					required: true,
+					schema: {
+							title: "相拥",
+							tags: "古风 女声",
+							prompt: "【主歌】\n烟雨朦胧锁江楼，孤灯不明思故人。\n千里共婵娟，何时能共枕眠？\n红尘多难，情深缘浅，相思成疾。\n梦回吹角连营，却见你，马踏飞燕。\n【副歌】\n你在桥头等归人，我在彼岸望故园。\n两情若是久长时，又岂在朝朝暮暮。\n终于一日，山河迢递，你我相见。\n此情可待成追忆，只是当时已惘然。\n【主歌】\n月上柳梢头，人约黄昏后。\n相思无尽处，漫卷诗书愁。\n风吹散细雨，翠竹暗香浮。\n何日平胡虏，良人兮归否？\n【副歌】\n你在灯火阑珊处，我在雾海孤舟。\n两意若是长久时，又岂在晨昏定省。\n终于一日，云开雾散，你我重逢。\n此情可待成追忆，只是当时已惘然。\n【尾声】\n红线牵，凤凰台上，誓言轻许。\n山无陵，天地合，乃敢与君绝。",
+							mv: "chirp-v3-0",
+							continue_clip_id: "",
+							continue_at: ""
+					}
+			}
 	*/
 
 	const params = await request.json();
@@ -334,16 +354,23 @@ api.post('/api/generate/v2', async (request, env) => {
 // POST /api/generate/concat/v2/
 api.post('/api/generate/concat/v2/', async (request, env) => {
 	/*
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Auth Data.',
-				required: true,
-				schema: {
-						session_id: "",
-						access_token: "",
-						clip_id: "",
-				}
-		}
+		#swagger.parameters['header'] = {
+					in: 'header',
+					description: 'Auth Data.',
+					required: true,
+					schema: {
+							x_session_id: "",
+							x_access_token: ""
+					}
+			}
+			#swagger.parameters['body'] = {
+					in: 'body',
+					description: 'Data.',
+					required: true,
+					schema: {
+							clip_id: ""
+					}
+			}
 	*/
 
 	const params = await request.json();
@@ -368,14 +395,21 @@ api.post('/api/generate/concat/v2/', async (request, env) => {
 // POST /api/gen/:clip_id/set_title
 api.post('/api/gen/:clip_id/set_title', async (request, env) => {
 	/*
+		#swagger.parameters['header'] = {
+					in: 'header',
+					description: 'Auth Data.',
+					required: true,
+					schema: {
+							x_session_id: "",
+							x_access_token: ""
+					}
+			}
 		#swagger.parameters['body'] = {
 				in: 'body',
-				description: 'Auth Data.',
+				description: 'Data.',
 				required: true,
 				schema: {
-						session_id: "",
-						access_token: "",
-						title: "相拥",
+					title: "相拥"
 				}
 		}
 	*/
@@ -407,15 +441,22 @@ api.post('/api/gen/:clip_id/set_title', async (request, env) => {
 // POST /api/gen/trash
 api.post('/api/gen/trash', async (request, env) => {
 	/*
+		#swagger.parameters['header'] = {
+					in: 'header',
+					description: 'Auth Data.',
+					required: true,
+					schema: {
+							x_session_id: "",
+							x_access_token: ""
+					}
+			}
 		#swagger.parameters['body'] = {
 				in: 'body',
-				description: 'Auth Data.',
+				description: 'Data.',
 				required: true,
 				schema: {
-						session_id: "",
-						access_token: "",
-						trash: true,
-						clip_ids: ["95b4ecb3-9017-4c49-8a09-5bd313db9ea6"]
+					trash: true,
+					clip_ids: ["95b4ecb3-9017-4c49-8a09-5bd313db9ea6"]
 				}
 		}
 	*/
@@ -446,14 +487,21 @@ api.post('/api/gen/trash', async (request, env) => {
 // POST /api/clips/delete
 api.post('/api/clips/delete', async (request, env) => {
 	/*
+		#swagger.parameters['header'] = {
+					in: 'header',
+					description: 'Auth Data.',
+					required: true,
+					schema: {
+							x_session_id: "",
+							x_access_token: ""
+					}
+			}
 		#swagger.parameters['body'] = {
 				in: 'body',
-				description: 'Auth Data.',
+				description: 'Data.',
 				required: true,
 				schema: {
-						session_id: "",
-						access_token: "",
-						clip_ids: ["95b4ecb3-9017-4c49-8a09-5bd313db9ea6"]
+					clip_ids: ["95b4ecb3-9017-4c49-8a09-5bd313db9ea6"]
 				}
 		}
 	*/

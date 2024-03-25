@@ -1,6 +1,6 @@
 {
 	"name": "suno-ai-proxy",
-	"version": "0.0.0",
+	"version": "0.0.1",
 	"private": true,
 	"scripts": {
 		"deploy": "npx wrangler deploy",
@@ -16,6 +16,5 @@
 		"wrangler": "^3.0.0"
 	},
 	"dependencies": {
-		"@fastify/cors": "^9.0.1"
 	}
 }

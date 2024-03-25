@@ -61,23 +61,18 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "description": "Auth Data.",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "session_id": {
-                  "type": "string",
-                  "example": ""
-                },
-                "access_token": {
-                  "type": "string",
-                  "example": ""
-                }
-              }
-            }
+            "name": "x-session-id",
+            "in": "header",
+            "description": "x-session-id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "x-access-token",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -92,23 +87,18 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "description": "Auth Data.",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "session_id": {
-                  "type": "string",
-                  "example": ""
-                },
-                "access_token": {
-                  "type": "string",
-                  "example": ""
-                }
-              }
-            }
+            "name": "x-session-id",
+            "in": "header",
+            "description": "x-session-id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "x-access-token",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -123,23 +113,18 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "description": "Auth Data.",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "session_id": {
-                  "type": "string",
-                  "example": ""
-                },
-                "access_token": {
-                  "type": "string",
-                  "example": ""
-                }
-              }
-            }
+            "name": "x-session-id",
+            "in": "header",
+            "description": "x-session-id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "x-access-token",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -154,23 +139,18 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "description": "Auth Data.",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "session_id": {
-                  "type": "string",
-                  "example": ""
-                },
-                "access_token": {
-                  "type": "string",
-                  "example": ""
-                }
-              }
-            }
+            "name": "x-session-id",
+            "in": "header",
+            "description": "x-session-id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "x-access-token",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -185,21 +165,27 @@
         "description": "",
         "parameters": [
           {
+            "name": "x-session-id",
+            "in": "header",
+            "description": "x-session-id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "x-access-token",
+            "required": false,
+            "type": "string"
+          },
+          {
             "name": "body",
             "in": "body",
-            "description": "Auth Data.",
+            "description": "Data.",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "session_id": {
-                  "type": "string",
-                  "example": ""
-                },
-                "access_token": {
-                  "type": "string",
-                  "example": ""
-                },
                 "prompt": {
                   "type": "string",
                   "example": ""
@@ -226,23 +212,18 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
-            "description": "Auth Data.",
-            "required": true,
-            "schema": {
-              "type": "object",
-              "properties": {
-                "session_id": {
-                  "type": "string",
-                  "example": ""
-                },
-                "access_token": {
-                  "type": "string",
-                  "example": ""
-                }
-              }
-            }
+            "name": "x-session-id",
+            "in": "header",
+            "description": "x-session-id",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "x-access-token",
+            "required": false,
+            "type": "string"
           }
         ],
         "responses": {
@@ -257,21 +238,32 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "header",
+            "in": "header",
             "description": "Auth Data.",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "session_id": {
+                "x_session_id": {
                   "type": "string",
                   "example": ""
                 },
-                "access_token": {
+                "x_access_token": {
                   "type": "string",
                   "example": ""
-                },
+                }
+              }
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "title": {
                   "type": "string",
                   "example": "相拥"
@@ -312,21 +304,32 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "header",
+            "in": "header",
             "description": "Auth Data.",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "session_id": {
+                "x_session_id": {
                   "type": "string",
                   "example": ""
                 },
-                "access_token": {
+                "x_access_token": {
                   "type": "string",
                   "example": ""
-                },
+                }
+              }
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "clip_id": {
                   "type": "string",
                   "example": ""
@@ -353,21 +356,32 @@
             "type": "string"
           },
           {
-            "name": "body",
-            "in": "body",
+            "name": "header",
+            "in": "header",
             "description": "Auth Data.",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "session_id": {
+                "x_session_id": {
                   "type": "string",
                   "example": ""
                 },
-                "access_token": {
+                "x_access_token": {
                   "type": "string",
                   "example": ""
-                },
+                }
+              }
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "title": {
                   "type": "string",
                   "example": "相拥"
@@ -388,21 +402,32 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "header",
+            "in": "header",
             "description": "Auth Data.",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "session_id": {
+                "x_session_id": {
                   "type": "string",
                   "example": ""
                 },
-                "access_token": {
+                "x_access_token": {
                   "type": "string",
                   "example": ""
-                },
+                }
+              }
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "trash": {
                   "type": "boolean",
                   "example": true
@@ -432,21 +457,32 @@
         "description": "",
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
+            "name": "header",
+            "in": "header",
             "description": "Auth Data.",
             "required": true,
             "schema": {
               "type": "object",
               "properties": {
-                "session_id": {
+                "x_session_id": {
                   "type": "string",
                   "example": ""
                 },
-                "access_token": {
+                "x_access_token": {
                   "type": "string",
                   "example": ""
-                },
+                }
+              }
+            }
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Data.",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
                 "clip_ids": {
                   "type": "array",
                   "example": [
