@@ -1,3 +1,13 @@
 name = "suno-ai-proxy"
 main = "src/index.ts"
 compatibility_date = "2024-03-20"
+
+[placement]
+mode = "smart"
+
+[vars]
+SESSION_ID = ""
+ACCESS_TOKEN = ""
+
+
+

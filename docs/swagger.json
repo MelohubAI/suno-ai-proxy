@@ -45,12 +45,12 @@
         }
       }
     },
-    "/api/playlist/{id}": {
+    "/api/playlist/{clip_id}": {
       "post": {
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "clip_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -199,6 +199,10 @@
                 "access_token": {
                   "type": "string",
                   "example": ""
+                },
+                "prompt": {
+                  "type": "string",
+                  "example": ""
                 }
               }
             }
@@ -211,12 +215,12 @@
         }
       }
     },
-    "/api/generate/lyrics/{id}": {
+    "/api/generate/lyrics/{clip_id}": {
       "post": {
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "clip_id",
             "in": "path",
             "required": true,
             "type": "string"
@@ -338,12 +342,12 @@
         }
       }
     },
-    "/api/gen/{id}/set_title": {
+    "/api/gen/{clip_id}/set_title": {
       "post": {
         "description": "",
         "parameters": [
           {
-            "name": "id",
+            "name": "clip_id",
             "in": "path",
             "required": true,
             "type": "string"
