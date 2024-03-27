@@ -32,4 +32,10 @@ access_token :
 swagger ui -> https://raw.githubusercontent.com/kilingzhang/suno-ai-proxy/main/docs/swagger.json
 ![swagger](./docs/swagger.png)
 
-```
+
+
+
+## License
+Copyright © 2023 [kilingzhang][profile-link]. <br />
+
+This project is [MIT](./LICENSE) licensed.
