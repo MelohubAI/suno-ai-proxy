@@ -6,7 +6,7 @@ export const corsHeaders = {
 	'Access-Control-Allow-Origin': '*',
 	'Access-Control-Allow-Methods': '*',
 	'Access-Control-Allow-Headers': '*',
-	'Access-Control-Max-Age': '86400',
+	'Access-Control-Max-Age': '86400'
 };
 
 class AuthService {
@@ -25,10 +25,10 @@ class AuthService {
 				'sec-fetch-site': 'same-site',
 				cookie: `__client=${access_token};`,
 				Referer: 'https://app.suno.ai/',
-				'Referrer-Policy': 'strict-origin-when-cross-origin',
+				'Referrer-Policy': 'strict-origin-when-cross-origin'
 			},
 			body: '',
-			method: 'POST',
+			method: 'POST'
 		});
 	}
 }
@@ -42,7 +42,7 @@ export async function handleRequest(request: IRequest, env: Env, callback: Funct
 	if (session_id === '' || access_token === '') {
 		return new Response(JSON.stringify({ errors: 'session_id and access_token are required' }), {
 			status: 400,
-			headers: { ...corsHeaders },
+			headers: { ...corsHeaders }
 		});
 	}
 
@@ -70,10 +70,10 @@ export function fetchSuno(url: string, token: string, body: any = null, method: 
 			'sec-fetch-mode': 'cors',
 			'sec-fetch-site': 'same-site',
 			Referer: 'https://app.suno.ai/',
-			'Referrer-Policy': 'strict-origin-when-cross-origin',
+			'Referrer-Policy': 'strict-origin-when-cross-origin'
 		},
 		body: body ? JSON.stringify(body) : null,
-		method: method.toUpperCase(),
+		method: method.toUpperCase()
 	});
 }
 
@@ -188,7 +188,7 @@ api.get('/api/playlist/:clip_id', async (request, env) => {
 	if (!clip_id) {
 		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
 			status: 400,
-			headers: { ...corsHeaders },
+			headers: { ...corsHeaders }
 		});
 	}
 
@@ -254,7 +254,7 @@ api.post('/api/generate/lyrics', async (request, env) => {
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-			prompt: prompt,
+			prompt: prompt
 		};
 		const url = `https://studio-api.suno.ai/api/generate/lyrics/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
@@ -282,13 +282,56 @@ api.get('/api/generate/lyrics/:clip_id', async (request, env) => {
 	if (!clip_id) {
 		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
 			status: 400,
-			headers: { ...corsHeaders },
+			headers: { ...corsHeaders }
 		});
 	}
 
 	return handleRequest(request, env, async (token: any) => {
 		const url = `https://studio-api.suno.ai/api/generate/lyrics/${clip_id}`;
 		const res = await fetchSuno(url, token['jwt'], null, 'GET');
+		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+	});
+});
+
+// POST /api/generate/v2/
+api.post('/api/generate/v2/', async (request, env) => {
+	/*
+		#swagger.parameters['header'] = {
+					in: 'header',
+					description: 'Auth Data.',
+					required: true,
+					schema: {
+							x_session_id: "",
+							x_access_token: ""
+					}
+			}
+			#swagger.parameters['body'] = {
+					in: 'body',
+					description: 'Data.',
+					required: true,
+					schema: {"prompt":"[Verse]\nThere's a place, oh yeah, that's oh so grand\nWhere you can sip your coffee and hold a friendly hand\nIt's not your average cafe, no, it's something more\nYou'll find feline friends behind each and every door\n\n[Verse 2]\nThe atmosphere is cozy, the coffee's nice and hot\nBut the star of the show is the kitties you've got\nYou can pet 'em, stroke 'em, give 'em all your love\nAt the cat cafe, it's like a dream from above\n\n[Chorus]\nCat cafe, oh cat cafe, where friendship's in the air (ooh-yeah)\nCat cafe, oh cat cafe, no worries and no cares (ooh-yeah)\nWe'll sip our lattes and purr the day away (ooh-yeah)\nAt the cat cafe, it's where we love to stay","tags":"dark raga","mv":"chirp-v3-0","title":"Cat Cafe","continue_clip_id":null,"continue_at":null}
+			}
+	*/
+
+	const params = await request.json();
+	const title = typeof params?.title === 'string' ? params.title : '';
+	const tags = typeof params?.tags === 'string' ? params.tags : '';
+	const prompt = typeof params?.prompt === 'string' ? params.prompt : '';
+	const mv = typeof params?.mv === 'string' ? params.mv : 'chirp-v3-0';
+	const continue_clip_id = typeof params?.continue_clip_id === 'string' ? params.continue_clip_id : null;
+	const continue_at = params?.continue_at && params?.continue_at !== '' ? params.continue_at : null;
+
+	return handleRequest(request, env, async (token: any) => {
+		const body = {
+			title: title,
+			tags: tags,
+			prompt: prompt,
+			mv: mv,
+			continue_clip_id: continue_clip_id,
+			continue_at: continue_at
+		};
+		const url = `https://studio-api.suno.ai/api/generate/v2/`;
+		const res = await fetchSuno(url, token['jwt'], body, 'POST');
 		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 	});
 });
@@ -320,13 +363,13 @@ api.post('/api/generate/concat/v2/', async (request, env) => {
 	if (!clip_id) {
 		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
 			status: 400,
-			headers: { ...corsHeaders },
+			headers: { ...corsHeaders }
 		});
 	}
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-			clip_id: clip_id,
+			clip_id: clip_id
 		};
 		const url = `https://studio-api.suno.ai/api/generate/concat/v2/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
@@ -361,7 +404,7 @@ api.post('/api/gen/:clip_id/set_title', async (request, env) => {
 	if (!clip_id) {
 		return new Response(JSON.stringify({ errors: 'clip_id is required' }), {
 			status: 400,
-			headers: { ...corsHeaders },
+			headers: { ...corsHeaders }
 		});
 	}
 	params = await request.json();
@@ -369,7 +412,7 @@ api.post('/api/gen/:clip_id/set_title', async (request, env) => {
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-			title: title,
+			title: title
 		};
 		const url = `https://studio-api.suno.ai/api/gen/${clip_id}/set_title/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
@@ -407,14 +450,14 @@ api.post('/api/gen/trash', async (request, env) => {
 	if (clip_ids.length == 0) {
 		return new Response(JSON.stringify({ errors: 'clip_ids is required' }), {
 			status: 400,
-			headers: { ...corsHeaders },
+			headers: { ...corsHeaders }
 		});
 	}
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
 			clip_ids: clip_ids,
-			trash: trash,
+			trash: trash
 		};
 		const url = `https://studio-api.suno.ai/api/gen/trash/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
@@ -450,13 +493,13 @@ api.post('/api/clips/delete', async (request, env) => {
 	if (clip_ids.length <= 0) {
 		return new Response(JSON.stringify({ errors: 'clip_ids is required' }), {
 			status: 400,
-			headers: { ...corsHeaders },
+			headers: { ...corsHeaders }
 		});
 	}
 
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-			ids: clip_ids,
+			ids: clip_ids
 		};
 
 		const url = `https://studio-api.suno.ai/api/clips/delete/`;
