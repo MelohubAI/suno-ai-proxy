@@ -39,3 +39,7 @@ swagger ui -> https://raw.githubusercontent.com/kilingzhang/suno-ai-proxy/main/d
 Copyright © 2023 [kilingzhang][profile-link]. <br />
 
 This project is [MIT](./LICENSE) licensed.
+
+
+<!-- LINK GROUP -->
+[profile-link]: https://github.com/kilingzhang
