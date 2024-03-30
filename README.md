@@ -28,6 +28,7 @@ access_token : (只需要 _client 的 value 就好)
 
 ### 2. [**详细接口文档**](https://documenter.getpostman.com/view/33852586/2sA35G4NQc)
 
+![postman_docs](./docs/postman_docs.png)
 
 ### 3. run in Postman
 
