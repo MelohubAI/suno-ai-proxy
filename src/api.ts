@@ -99,19 +99,6 @@ api.get('/api/new', async (request) => {
 
 // GET /api/feed
 api.get('/api/feed', async (request, env) => {
-	/*
-		#swagger.parameters['x-session-id'] = {
-				in: 'header',
-				description: 'x-session-id',
-				required: false,
-		}
-		#swagger.parameters['x-access-token'] = {
-				in: 'header',
-				description: 'x-access-token',
-				required: false,
-		}
-	*/
-
 	const { query } = request;
 
 	let data = new URLSearchParams();
@@ -139,19 +126,6 @@ api.get('/api/feed', async (request, env) => {
 
 // GET /api/playlist/me
 api.get('/api/playlist/me', async (request, env) => {
-	/*
-		#swagger.parameters['x-session-id'] = {
-				in: 'header',
-				description: 'x-session-id',
-				required: false,
-		}
-		#swagger.parameters['x-access-token'] = {
-				in: 'header',
-				description: 'x-access-token',
-				required: false,
-		}
-	*/
-
 	const { query } = request;
 	let data = new URLSearchParams();
 	// @ts-ignore
@@ -168,19 +142,6 @@ api.get('/api/playlist/me', async (request, env) => {
 
 // GET /api/playlist/:clip_id
 api.get('/api/playlist/:clip_id', async (request, env) => {
-	/*
-		#swagger.parameters['x-session-id'] = {
-				in: 'header',
-				description: 'x-session-id',
-				required: false,
-		}
-		#swagger.parameters['x-access-token'] = {
-				in: 'header',
-				description: 'x-access-token',
-				required: false,
-		}
-	*/
-
 	const { query, params } = request;
 	console.debug(query, params);
 	const page = typeof query?.page === 'string' ? query.page : '1';
@@ -201,19 +162,6 @@ api.get('/api/playlist/:clip_id', async (request, env) => {
 
 // GET /api/clips/trashed
 api.get('/api/clips/trashed', async (request, env) => {
-	/*
-		#swagger.parameters['x-session-id'] = {
-				in: 'header',
-				description: 'x-session-id',
-				required: false,
-		}
-		#swagger.parameters['x-access-token'] = {
-				in: 'header',
-				description: 'x-access-token',
-				required: false,
-		}
-	*/
-
 	const { query } = request;
 	let data = new URLSearchParams();
 	// @ts-ignore
@@ -228,27 +176,6 @@ api.get('/api/clips/trashed', async (request, env) => {
 
 // POST /api/generate/lyrics
 api.post('/api/generate/lyrics', async (request, env) => {
-	/*
-		#swagger.parameters['x-session-id'] = {
-				in: 'header',
-				description: 'x-session-id',
-				required: false,
-		}
-		#swagger.parameters['x-access-token'] = {
-				in: 'header',
-				description: 'x-access-token',
-				required: false,
-		}
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Data.',
-				required: true,
-				schema: {
-						prompt: ""
-				}
-		}
-	*/
-
 	const { params } = request;
 	const prompt = typeof params?.prompt === 'string' ? params.prompt : '';
 
@@ -264,19 +191,6 @@ api.post('/api/generate/lyrics', async (request, env) => {
 
 // GET /api/generate/lyrics/:clip_id
 api.get('/api/generate/lyrics/:clip_id', async (request, env) => {
-	/*
-		#swagger.parameters['x-session-id'] = {
-				in: 'header',
-				description: 'x-session-id',
-				required: false,
-		}
-		#swagger.parameters['x-access-token'] = {
-				in: 'header',
-				description: 'x-access-token',
-				required: false,
-		}
-	*/
-
 	const { params } = request;
 	let clip_id = typeof params?.clip_id === 'string' ? params.clip_id : '';
 	if (!clip_id) {
@@ -295,24 +209,6 @@ api.get('/api/generate/lyrics/:clip_id', async (request, env) => {
 
 // POST /api/generate/v2/
 api.post('/api/generate/v2/', async (request, env) => {
-	/*
-		#swagger.parameters['header'] = {
-					in: 'header',
-					description: 'Auth Data.',
-					required: true,
-					schema: {
-							x_session_id: "",
-							x_access_token: ""
-					}
-			}
-			#swagger.parameters['body'] = {
-					in: 'body',
-					description: 'Data.',
-					required: true,
-					schema: {"prompt":"[Verse]\nThere's a place, oh yeah, that's oh so grand\nWhere you can sip your coffee and hold a friendly hand\nIt's not your average cafe, no, it's something more\nYou'll find feline friends behind each and every door\n\n[Verse 2]\nThe atmosphere is cozy, the coffee's nice and hot\nBut the star of the show is the kitties you've got\nYou can pet 'em, stroke 'em, give 'em all your love\nAt the cat cafe, it's like a dream from above\n\n[Chorus]\nCat cafe, oh cat cafe, where friendship's in the air (ooh-yeah)\nCat cafe, oh cat cafe, no worries and no cares (ooh-yeah)\nWe'll sip our lattes and purr the day away (ooh-yeah)\nAt the cat cafe, it's where we love to stay","tags":"dark raga","mv":"chirp-v3-0","title":"Cat Cafe","continue_clip_id":null,"continue_at":null}
-			}
-	*/
-
 	const params = await request.json();
 	const title = typeof params?.title === 'string' ? params.title : '';
 	const tags = typeof params?.tags === 'string' ? params.tags : '';
@@ -338,26 +234,6 @@ api.post('/api/generate/v2/', async (request, env) => {
 
 // POST /api/generate/concat/v2/
 api.post('/api/generate/concat/v2/', async (request, env) => {
-	/*
-		#swagger.parameters['header'] = {
-					in: 'header',
-					description: 'Auth Data.',
-					required: true,
-					schema: {
-							x_session_id: "",
-							x_access_token: ""
-					}
-			}
-			#swagger.parameters['body'] = {
-					in: 'body',
-					description: 'Data.',
-					required: true,
-					schema: {
-							clip_id: ""
-					}
-			}
-	*/
-
 	const params = await request.json();
 	const clip_id = typeof params?.clip_id === 'string' ? params.clip_id : '';
 	if (!clip_id) {
@@ -379,26 +255,6 @@ api.post('/api/generate/concat/v2/', async (request, env) => {
 
 // POST /api/gen/:clip_id/set_title
 api.post('/api/gen/:clip_id/set_title', async (request, env) => {
-	/*
-		#swagger.parameters['header'] = {
-					in: 'header',
-					description: 'Auth Data.',
-					required: true,
-					schema: {
-							x_session_id: "",
-							x_access_token: ""
-					}
-			}
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Data.',
-				required: true,
-				schema: {
-					title: "相拥"
-				}
-		}
-	*/
-
 	let { params } = request;
 	let clip_id = typeof params?.clip_id === 'string' ? params.clip_id : '';
 	if (!clip_id) {
@@ -422,27 +278,6 @@ api.post('/api/gen/:clip_id/set_title', async (request, env) => {
 
 // POST /api/gen/trash
 api.post('/api/gen/trash', async (request, env) => {
-	/*
-		#swagger.parameters['header'] = {
-					in: 'header',
-					description: 'Auth Data.',
-					required: true,
-					schema: {
-							x_session_id: "",
-							x_access_token: ""
-					}
-			}
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Data.',
-				required: true,
-				schema: {
-					trash: true,
-					clip_ids: ["95b4ecb3-9017-4c49-8a09-5bd313db9ea6"]
-				}
-		}
-	*/
-
 	const params = await request.json();
 	const trash = typeof params?.trash === 'boolean' ? params.trash : true;
 	const clip_ids = typeof params?.clip_ids === 'object' ? params.clip_ids : [];
@@ -467,26 +302,6 @@ api.post('/api/gen/trash', async (request, env) => {
 
 // POST /api/clips/delete
 api.post('/api/clips/delete', async (request, env) => {
-	/*
-		#swagger.parameters['header'] = {
-					in: 'header',
-					description: 'Auth Data.',
-					required: true,
-					schema: {
-							x_session_id: "",
-							x_access_token: ""
-					}
-			}
-		#swagger.parameters['body'] = {
-				in: 'body',
-				description: 'Data.',
-				required: true,
-				schema: {
-					clip_ids: ["95b4ecb3-9017-4c49-8a09-5bd313db9ea6"]
-				}
-		}
-	*/
-
 	const params = await request.json();
 	const clip_ids = typeof params?.clip_ids === 'object' ? params.clip_ids : [];
 

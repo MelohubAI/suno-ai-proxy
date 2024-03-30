@@ -5,8 +5,7 @@
 	"scripts": {
 		"deploy": "npx wrangler deploy",
 		"dev": "npx wrangler dev",
-		"start": "npx wrangler dev",
-		"swagger-autogen": "node ./docs/swagger.js"
+		"start": "npx wrangler dev"
 	},
 	"devDependencies": {
 		"@cloudflare/workers-types": "^4.20240320.1",

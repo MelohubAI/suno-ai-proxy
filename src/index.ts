@@ -22,6 +22,9 @@ export default {
 			return apiRouter.handle(request, env, ctx);
 		}
 
-		return new Response('Not Found', { status: 404 });
+		return new Response(JSON.stringify({
+			'message': 'read document',
+			url: 'https://documenter.getpostman.com/view/33852586/2sA35G4NQc'
+		}), { status: 200 });
 	}
 };
