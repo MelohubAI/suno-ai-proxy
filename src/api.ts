@@ -227,21 +227,25 @@ api.get('/api/generate/lyrics/:clip_id', async (request, env) => {
 // POST /api/generate/v2/
 api.post('/api/generate/v2/', async (request, env) => {
 	const params = await request.json();
-	const title = typeof params?.title === 'string' ? params.title : '';
-	const tags = typeof params?.tags === 'string' ? params.tags : '';
-	const prompt = typeof params?.prompt === 'string' ? params.prompt : '';
-	const mv = typeof params?.mv === 'string' ? params.mv : 'chirp-v3-0';
-	const continue_clip_id = typeof params?.continue_clip_id === 'string' ? params.continue_clip_id : null;
+	const title = params?.title && params?.title !== '' ? params.title : '';
+	const tags = params?.tags && params?.tags !== '' ? params.tags : '';
+	const prompt = params?.prompt && params?.prompt !== '' ? params.prompt : '';
+	const gpt_description_prompt =
+		params?.gpt_description_prompt && params?.gpt_description_prompt !== '' ? params.gpt_description_prompt : null;
+	const make_instrumental = typeof params?.make_instrumental === 'boolean' ? params.make_instrumental : null;
+	const mv = params?.mv && params?.mv !== '' ? params.mv : 'chirp-v3-0';
+	const continue_clip_id = params?.continue_clip_id && params?.continue_clip_id !== '' ? params.continue_clip_id : null;
 	const continue_at = params?.continue_at && params?.continue_at !== '' ? params.continue_at : null;
-
 	return handleRequest(request, env, async (token: any) => {
 		const body = {
-			title: title,
-			tags: tags,
-			prompt: prompt,
-			mv: mv,
-			continue_clip_id: continue_clip_id,
-			continue_at: continue_at,
+			...(title != null && { title }),
+			...(tags != null && { tags }),
+			...(prompt != null && { prompt }),
+			...(gpt_description_prompt != null && { gpt_description_prompt }),
+			...(make_instrumental != null && { make_instrumental }),
+			...(mv != null && { mv }),
+			...(continue_clip_id != null && { continue_clip_id }),
+			...(continue_at != null && { continue_at }),
 		};
 		const url = `https://studio-api.suno.ai/api/generate/v2/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
