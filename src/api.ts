@@ -224,8 +224,8 @@ api.get('/api/generate/lyrics/:clip_id', async (request, env) => {
 	});
 });
 
-// POST /api/generate/v2/
-api.post('/api/generate/v2/', async (request, env) => {
+// POST /api/generate/v2
+api.post('/api/generate/v2', async (request, env) => {
 	const params = await request.json();
 	const title = params?.title && params?.title !== '' ? params.title : '';
 	const tags = params?.tags && params?.tags !== '' ? params.tags : '';
@@ -253,8 +253,8 @@ api.post('/api/generate/v2/', async (request, env) => {
 	});
 });
 
-// POST /api/generate/concat/v2/
-api.post('/api/generate/concat/v2/', async (request, env) => {
+// POST /api/generate/concat/v2
+api.post('/api/generate/concat/v2', async (request, env) => {
 	const params = await request.json();
 	const clip_id = typeof params?.clip_id === 'string' ? params.clip_id : '';
 	if (!clip_id) {
