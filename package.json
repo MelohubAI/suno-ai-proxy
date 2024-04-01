@@ -14,5 +14,7 @@
 		"typescript": "^5.0.4",
 		"wrangler": "^3.0.0"
 	},
-	"dependencies": {}
+	"dependencies": {
+		"uuid": "^9.0.1"
+	}
 }

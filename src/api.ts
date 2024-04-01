@@ -1,4 +1,5 @@
 import { IRequest, Router } from 'itty-router';
+import { v4 as uuidv4 } from 'uuid';
 
 export const api = Router();
 
@@ -120,41 +121,6 @@ api.get('/api/feed', async (request, env) => {
 	return handleRequest(request, env, async (token: any) => {
 		const url = `https://studio-api.suno.ai/api/feed/?${data.toString()}`;
 		const res = await fetchSuno(url, token['jwt'], null, 'GET');
-		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
-	});
-});
-
-// GET /api/playlist/me
-api.get('/api/playlist/me', async (request, env) => {
-	const { query } = request;
-	let data = new URLSearchParams();
-	// @ts-ignore
-	data.append('page', Math.max(query?.page ?? '0' - 1, 0));
-	// @ts-ignore
-	data.append('show_trashed', query?.show_trashed ?? false);
-
-	return handleRequest(request, env, async (token: any) => {
-		const url = `https://studio-api.suno.ai/api/playlist/me?${data.toString()}`;
-		const res = await fetchSuno(url, token['jwt'], null, 'GET');
-		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
-	});
-});
-
-// GET /api/playlist/:clip_id
-api.get('/api/playlist/:playlist_id', async (request, env) => {
-	const { query, params } = request;
-	const page = typeof query?.page === 'string' ? query.page : '1';
-	const playlist_id = typeof params?.playlist_id === 'string' ? params.playlist_id : '';
-	if (!playlist_id) {
-		return new Response(JSON.stringify({ errors: 'playlist_id is required' }), {
-			status: 400,
-			headers: { ...corsHeaders },
-		});
-	}
-
-	return handleRequest(request, env, async (token: any) => {
-		const url = `https://studio-api.suno.ai/api/playlist/${playlist_id}/?page=${page}`;
-		const res = await fetchSuno(url, token?.jwt, null, 'GET');
 		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
 	});
 });
@@ -340,7 +306,109 @@ api.post('/api/clips/delete', async (request, env) => {
 
 		const url = `https://studio-api.suno.ai/api/clips/delete/`;
 		const res = await fetchSuno(url, token['jwt'], body, 'POST');
-		return new Response(JSON.stringify({ detail: 'ok' }), { status: res.status, headers: { ...corsHeaders } });
+		const status = res.status !== 204 ? res.status : 200;
+		return new Response(JSON.stringify({ message: 'ok' }), { status: status, headers: { ...corsHeaders } });
+	});
+});
+
+// GET /api/playlist/me
+api.get('/api/playlist/me', async (request, env) => {
+	const { query } = request;
+	let data = new URLSearchParams();
+	// @ts-ignore
+	data.append('page', Math.max(query?.page ?? '0' - 1, 0));
+	// @ts-ignore
+	data.append('show_trashed', query?.show_trashed ?? false);
+
+	return handleRequest(request, env, async (token: any) => {
+		const url = `https://studio-api.suno.ai/api/playlist/me?${data.toString()}`;
+		const res = await fetchSuno(url, token['jwt'], null, 'GET');
+		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+	});
+});
+
+// GET /api/playlist/:clip_id
+api.get('/api/playlist/:playlist_id', async (request, env) => {
+	const { query, params } = request;
+	const page = typeof query?.page === 'string' ? query.page : '1';
+	const playlist_id = typeof params?.playlist_id === 'string' ? params.playlist_id : '';
+	if (!playlist_id) {
+		return new Response(JSON.stringify({ errors: 'playlist_id is required' }), {
+			status: 400,
+			headers: { ...corsHeaders },
+		});
+	}
+
+	return handleRequest(request, env, async (token: any) => {
+		const url = `https://studio-api.suno.ai/api/playlist/${playlist_id}/?page=${page}`;
+		const res = await fetchSuno(url, token?.jwt, null, 'GET');
+		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+	});
+});
+
+// POST /api/playlist/create
+api.post('/api/playlist/create', async (request, env) => {
+	const params = await request.json();
+	return handleRequest(request, env, async (token: any) => {
+		params.id = params?.id ?? uuidv4();
+		params.page = params?.page ?? 1;
+		params.image_url = params?.image_url ?? 'https://cdn1.suno.ai/image_dc9e8b4a-2b87-441f-9de9-7db21e36ec77.png';
+		params.is_discover_playlist = params?.is_discover_playlist ?? false;
+		params.is_owned = params?.is_owned ?? true;
+		params.is_public = params?.is_public ?? false;
+		params.is_trashed = params?.is_trashed ?? false;
+		params.num_total_results = params?.num_total_results ?? 0;
+		params.playlist_clips = params?.playlist_clips ?? [];
+		params.user_display_name = params?.user_display_name ?? null;
+		const body = {
+			...(params?.page != null && { page: params?.page }),
+			...(params?.name != null && { name: params?.name }),
+			...(params?.description != null && { description: params?.description }),
+			...(params?.id != null && { id: params?.id }),
+			...(params?.image_url != null && { image_url: params?.image_url }),
+			...(params?.is_discover_playlist != null && { is_discover_playlist: params?.is_discover_playlist }),
+			...(params?.is_owned != null && { is_owned: params?.is_owned }),
+			...(params?.is_public != null && { is_public: params?.is_public }),
+			...(params?.is_trashed != null && { is_trashed: params?.is_trashed }),
+			...(params?.num_total_results != null && { num_total_results: params?.num_total_results }),
+			...(params?.playlist_clips != null && { playlist_clips: params?.playlist_clips }),
+			...(params?.user_display_name != null && { user_display_name: params?.user_display_name }),
+		};
+		const url = `https://studio-api.suno.ai/api/playlist/create/`;
+		const res = await fetchSuno(url, token['jwt'], body, 'POST');
+		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+	});
+});
+
+// POST /api/playlist/set_metadata
+api.post('/api/playlist/set_metadata', async (request, env) => {
+	const params = await request.json();
+	return handleRequest(request, env, async (token: any) => {
+		const body = {
+			...(params?.playlist_id != null && { playlist_id: params?.playlist_id }),
+			...(params?.name != null && { name: params?.name }),
+			...(params?.description != null && { description: params?.description }),
+		};
+		const url = `https://studio-api.suno.ai/api/playlist/set_metadata/`;
+		const res = await fetchSuno(url, token['jwt'], body, 'POST');
+		const status = res.status !== 204 ? res.status : 200;
+		return new Response(JSON.stringify({ message: 'ok' }), { status: status, headers: { ...corsHeaders } });
+	});
+});
+
+// POST /api/playlist/trash
+api.post('/api/playlist/trash', async (request, env) => {
+	const params = await request.json();
+	params.undo_trash = params?.undo_trash ?? false;
+	return handleRequest(request, env, async (token: any) => {
+		const body = {
+			...(params?.playlist_id != null && { playlist_id: params?.playlist_id }),
+			...(params?.undo_trash != null && { undo_trash: params?.undo_trash }),
+		};
+		const url = `https://studio-api.suno.ai/api/playlist/trash/`;
+		const res = await fetchSuno(url, token['jwt'], body, 'POST');
+		const status = res.status !== 204 ? res.status : 200;
+		return new Response(JSON.stringify({ message: 'ok' }), { status: status, headers: { ...corsHeaders } });
 	});
 });
 
