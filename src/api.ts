@@ -112,14 +112,9 @@ api.get('/api/touch', async (request, env) => {
 		});
 	}
 
-	let res = await AuthService.refreshToken(session_id, access_token);
-	const token = await res.json();
-	// @ts-ignore
-	if ('errors' in token || !('jwt' in token)) {
-		return new Response(JSON.stringify(token), { status: res.status, headers: { ...corsHeaders } });
-	}
-
-	return new Response(JSON.stringify({ message: 'ok' }));
+	let res = await AuthService.touch(session_id, access_token);
+	const touch = await res.json();
+	return new Response(JSON.stringify(touch), { status: res.status, headers: { ...corsHeaders } });
 });
 
 // GET /api/trending
