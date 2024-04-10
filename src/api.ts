@@ -1,5 +1,4 @@
 import { IRequest, Router } from 'itty-router';
-import { v4 as uuidv4 } from 'uuid';
 
 export const api = Router();
 
@@ -11,8 +10,8 @@ export const corsHeaders = {
 };
 
 class AuthService {
-	static async refreshToken(session_id: string, access_token: string, clerk_js_version: string = '4.70.5') {
-		const url = `https://clerk.suno.ai/v1/client/sessions/${session_id}/tokens?_clerk_js_version=${clerk_js_version}`;
+	static async refreshToken(session_id: string, access_token: string, clerk_js_version: string = '4.72.0-snapshot.vc141245') {
+		const url = `https://clerk.suno.com/v1/client/sessions/${session_id}/tokens?_clerk_js_version=${clerk_js_version}`;
 		return await fetch(url, {
 			headers: {
 				accept: '*/*',
@@ -25,7 +24,29 @@ class AuthService {
 				'sec-fetch-mode': 'cors',
 				'sec-fetch-site': 'same-site',
 				cookie: `__client=${access_token};`,
-				Referer: 'https://app.suno.ai/',
+				Referer: 'https://app.suno.com/',
+				'Referrer-Policy': 'strict-origin-when-cross-origin',
+			},
+			body: '',
+			method: 'POST',
+		});
+	}
+
+	static async touch(session_id: string, access_token: string, clerk_js_version: string = '4.72.0-snapshot.vc141245') {
+		const url = `https://clerk.suno.com/v1/client/sessions/${session_id}/touch?_clerk_js_version=${clerk_js_version}`;
+		return await fetch(url, {
+			headers: {
+				accept: '*/*',
+				'accept-language': 'zh-CN,zh;q=0.9',
+				'content-type': 'application/x-www-form-urlencoded',
+				'sec-ch-ua': '"Chromium";v="123", "Not:A-Brand";v="8"',
+				'sec-ch-ua-mobile': '?0',
+				'sec-ch-ua-platform': '"macOS"',
+				'sec-fetch-dest': 'empty',
+				'sec-fetch-mode': 'cors',
+				'sec-fetch-site': 'same-site',
+				cookie: `__client=${access_token};`,
+				Referer: 'https://app.suno.com/',
 				'Referrer-Policy': 'strict-origin-when-cross-origin',
 			},
 			body: '',
@@ -70,13 +91,36 @@ export function fetchSuno(url: string, token: string, body: any = null, method: 
 			'sec-fetch-dest': 'empty',
 			'sec-fetch-mode': 'cors',
 			'sec-fetch-site': 'same-site',
-			Referer: 'https://app.suno.ai/',
+			Referer: 'https://app.suno.com/',
 			'Referrer-Policy': 'strict-origin-when-cross-origin',
 		},
 		body: body ? JSON.stringify(body) : null,
 		method: method.toUpperCase(),
 	});
 }
+
+// GET /api/touch
+api.get('/api/touch', async (request, env) => {
+	const { SESSION_ID, ACCESS_TOKEN } = env;
+	const { headers } = request;
+	const session_id = headers?.x_session_id ? headers.x_session_id : SESSION_ID;
+	const access_token = headers?.x_access_token ? headers.x_access_token : ACCESS_TOKEN;
+	if (session_id === '' || access_token === '') {
+		return new Response(JSON.stringify({ errors: 'session_id and access_token are required' }), {
+			status: 400,
+			headers: { ...corsHeaders },
+		});
+	}
+
+	let res = await AuthService.refreshToken(session_id, access_token);
+	const token = await res.json();
+	// @ts-ignore
+	if ('errors' in token || !('jwt' in token)) {
+		return new Response(JSON.stringify(token), { status: res.status, headers: { ...corsHeaders } });
+	}
+
+	return new Response(JSON.stringify({ message: 'ok' }));
+});
 
 // GET /api/trending
 api.get('/api/trending', async (request) => {
@@ -350,9 +394,9 @@ api.get('/api/playlist/:playlist_id', async (request, env) => {
 api.post('/api/playlist/create', async (request, env) => {
 	const params = await request.json();
 	return handleRequest(request, env, async (token: any) => {
-		params.id = params?.id ?? uuidv4();
+		params.id = params?.id ?? '';
 		params.page = params?.page ?? 1;
-		params.image_url = params?.image_url ?? 'https://cdn1.suno.ai/image_dc9e8b4a-2b87-441f-9de9-7db21e36ec77.png';
+		params.image_url = params?.image_url ?? 'https://cdn1.suno.com/image_dc9e8b4a-2b87-441f-9de9-7db21e36ec77.png';
 		params.is_discover_playlist = params?.is_discover_playlist ?? false;
 		params.is_owned = params?.is_owned ?? true;
 		params.is_public = params?.is_public ?? false;
