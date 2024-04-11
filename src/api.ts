@@ -55,7 +55,11 @@ class AuthService {
 	}
 }
 
-export async function handleRequest(request: IRequest, env: Env, callback: Function) {
+export async function handleRequest(request: IRequest, env: Env, callback: Function, isRefreshToken: boolean = true) {
+	if (!isRefreshToken) {
+		return callback({});
+	}
+
 	// @ts-ignore
 	const { SESSION_ID, ACCESS_TOKEN } = env;
 	const { headers } = request;
@@ -378,11 +382,16 @@ api.get('/api/playlist/:playlist_id', async (request, env) => {
 		});
 	}
 
-	return handleRequest(request, env, async (token: any) => {
-		const url = `https://studio-api.suno.ai/api/playlist/${playlist_id}/?page=${page}`;
-		const res = await fetchSuno(url, token?.jwt, null, 'GET');
-		return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
-	});
+	return handleRequest(
+		request,
+		env,
+		async (token: any) => {
+			const url = `https://studio-api.suno.ai/api/playlist/${playlist_id}/?page=${page}`;
+			const res = await fetchSuno(url, token?.jwt, null, 'GET');
+			return new Response(JSON.stringify(await res.json()), { status: res.status, headers: { ...corsHeaders } });
+		},
+		false,
+	);
 });
 
 // POST /api/playlist/create
